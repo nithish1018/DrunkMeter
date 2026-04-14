@@ -4,6 +4,7 @@ type OrientationPermission = 'unknown' | 'granted' | 'denied' | 'unsupported'
 
 export const useDeviceOrientation = (isTracking: boolean) => {
   const [gamma, setGamma] = useState<number | null>(null)
+  const [beta, setBeta] = useState<number | null>(null)
   const [permissionState, setPermissionState] =
     useState<OrientationPermission>('unknown')
 
@@ -47,6 +48,10 @@ export const useDeviceOrientation = (isTracking: boolean) => {
       if (typeof event.gamma === 'number') {
         setGamma(event.gamma)
       }
+
+      if (typeof event.beta === 'number') {
+        setBeta(event.beta)
+      }
     }
 
     window.addEventListener('deviceorientation', onOrientation)
@@ -55,6 +60,7 @@ export const useDeviceOrientation = (isTracking: boolean) => {
 
   return {
     gamma,
+    beta,
     isSupported,
     permissionState,
     requestPermission,

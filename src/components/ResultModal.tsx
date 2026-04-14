@@ -37,7 +37,7 @@ export function ResultModal({
                     <p className="mt-1 text-sm font-semibold text-white">{tapAccuracyPercent}%</p>
                 </div>
                 <div className="rounded-2xl border border-white/15 bg-white/5 p-3">
-                    <p className="text-white/50">Rhythm</p>
+                    <p className="text-white/50">Steady Dot</p>
                     <p className="mt-1 text-sm font-semibold text-white">{breakdown.rhythmScore}</p>
                 </div>
                 <div className="rounded-2xl border border-white/15 bg-white/5 p-3">

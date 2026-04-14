@@ -26,10 +26,14 @@ export const normalizeStabilityScore = (averageDeviation: number): number => {
 export const normalizeRhythmScore = (
     averageOffsetMs: number,
     taps: number,
+    durationMs: number,
 ): number => {
-    const offsetScore = ((averageOffsetMs - 20) / (340 - 20)) * 100
-    const lowTapPenalty = Math.max(0, 8 - taps) * 5
-    return clamp(offsetScore + lowTapPenalty, 0, 100)
+    const driftPenalty = clamp((averageOffsetMs / 70) * 70, 0, 70)
+    const expectedSamples = Math.max(1, durationMs / 80)
+    const stabilityRatio = clamp(taps / expectedSamples, 0, 1)
+    const instabilityPenalty = (1 - stabilityRatio) * 30
+
+    return clamp(driftPenalty + instabilityPenalty, 0, 100)
 }
 
 export const normalizeCognitionScore = (
@@ -61,6 +65,7 @@ export const computeFinalScore = (
     const rhythmScore = normalizeRhythmScore(
         results.rhythm.averageOffsetMs,
         results.rhythm.taps,
+        results.rhythm.durationMs,
     )
     const cognitionScore = normalizeCognitionScore(
         results.cognition.rounds,

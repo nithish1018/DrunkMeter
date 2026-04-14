@@ -23,7 +23,7 @@ export function TestFlowPage({ onComplete }: TestFlowPageProps) {
     const subtitle = useMemo(() => {
         if (step === 0) return 'Test 1 of 5: Reaction time'
         if (step === 1) return 'Test 2 of 5: Tap accuracy'
-        if (step === 2) return 'Test 3 of 5: Rhythm tap'
+        if (step === 2) return 'Test 3 of 5: Hold steady + moving dot'
         if (step === 3) return 'Test 4 of 5: Color chaos'
         return 'Test 5 of 5: Tilt stability'
     }, [step])
