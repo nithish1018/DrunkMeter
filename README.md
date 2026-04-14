@@ -1,73 +1,122 @@
-# React + TypeScript + Vite
+# Drunk Test
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Mobile-first web app that runs a playful set of motor and cognition checks and outputs a final "Drunk Score" from 0-100.
 
-Currently, two official plugins are available:
+Built with React + TypeScript + Vite + Tailwind CSS.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Highlights
 
-## React Compiler
+- Neon dark theme with glassmorphism UI
+- Mobile-first layout and interactions
+- Device motion sensor support for tilt-based tests
+- 5-step sequential test flow
+- Weighted score breakdown and final category
+- Best score persistence in localStorage (lowest score is best)
+- Native share support with URL
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Test Flow
 
-## Expanding the ESLint configuration
+1. Reaction Time
+   - Wait for green, then tap as fast as possible
+   - False starts are penalized
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2. Tap Accuracy
+   - Tap moving target quickly before time runs out
+   - Tracks attempts, hits, and misses
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+3. Hold Steady + Moving Dot
+   - Dot follows device orientation
+   - Keep dot inside center ring as much as possible
+   - Uses gamma/beta orientation data
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+4. Color Chaos (Stroop-style)
+   - Tap the word meaning, not the text color
+   - Measures cognitive interference + speed
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+5. Tilt Stability
+   - Hold phone steady while orientation drift is measured
+   - Includes fallback path if sensors are unavailable
+
+## Scoring
+
+Each module is normalized to a 0-100 penalty-style score (higher means more impaired), then combined:
+
+- Reaction: 25%
+- Tap Accuracy: 20%
+- Hold Steady Dot: 20%
+- Color Chaos: 15%
+- Tilt Stability: 20%
+
+Final score adds a small random offset (+/- 5) for realism and maps to:
+
+- 0-20: Sober
+- 21-50: Buzzed
+- 51-80: Drunk
+- 81-100: Wasted
+
+## Tech Stack
+
+- React 19
+- TypeScript
+- Vite 8
+- Tailwind CSS 3 + PostCSS + Autoprefixer
+
+## Project Structure
+
+```text
+src/
+  components/   reusable UI components
+  hooks/        custom hooks (score + orientation)
+  pages/        page-level screens
+  tests/        individual game/test modules
+  utils/        types + scoring logic
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js 18+
+- npm
+
+### Install
+
+```bash
+npm install
 ```
+
+### Run in development
+
+```bash
+npm run dev
+```
+
+### Build for production
+
+```bash
+npm run build
+```
+
+### Preview production build
+
+```bash
+npm run preview
+```
+
+### Lint
+
+```bash
+npm run lint
+```
+
+## Sensor Permissions
+
+Some tests use `deviceorientation`.
+
+- On iOS Safari, motion permission prompt may appear.
+- If permission is denied, sensor-dependent tests show fallback behavior.
+
+## Notes
+
+- This app is for entertainment only, not a medical or legal sobriety test.
+- Best score shown in UI is the lowest score achieved so far and is stored in localStorage.
