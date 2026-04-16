@@ -46,7 +46,15 @@ export type ScoreBreakdown = {
 }
 
 export type DrunkCategory = {
-  label: 'Sober 😇' | 'Buzzed 😏' | 'Drunk 💀' | 'Wasted 🚗❌'
+  label:
+  | 'Stone Cold Sober 🧊'
+  | 'Sober 😇'
+  | 'Tipsy 🙂'
+  | 'Buzzed 😏'
+  | 'Wobbly 🤪'
+  | 'Drunk 💀'
+  | 'Very Drunk 🚨'
+  | 'Wasted 🚗❌'
   colorClass: string
   description: string
 }

@@ -8,8 +8,7 @@ type LandingPageProps = {
 export function LandingPage({ bestScore, onStart }: LandingPageProps) {
     return (
         <main className="mx-auto flex min-h-svh w-full max-w-xl flex-col justify-center px-4 py-8 text-center sm:px-6">
-            <p className="text-xs uppercase tracking-[0.22em] text-white/60">Motor Skill Challenge</p>
-            <h1 className="mt-2 font-display text-5xl text-white sm:text-6xl">Drunk Test 🍺</h1>
+            <h1 className="font-display text-5xl text-white sm:text-6xl">Drunk Test 🍺</h1>
             <p className="mx-auto mt-4 max-w-sm text-sm text-white/70">
                 Three quick tests. One chaotic score. Best on mobile with motion sensors enabled.
             </p>
