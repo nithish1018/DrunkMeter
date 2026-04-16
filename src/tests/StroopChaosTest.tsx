@@ -46,6 +46,32 @@ export function StroopChaosTest({ onComplete }: StroopChaosTestProps) {
         [round],
     )
 
+    const optionLabelColorMap = useMemo<Record<ColorName, ColorName>>(() => {
+        const seed = `${round}-${prompt.word}-${prompt.ink}-${isStarted ? '1' : '0'}`
+
+        const charSum = seed.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
+        const pickDifferent = (option: ColorName, offset: number): ColorName => {
+            const forbiddenIndex = optionColors.indexOf(option)
+            const start = (charSum + offset) % optionColors.length
+
+            for (let indexShift = 0; indexShift < optionColors.length; indexShift += 1) {
+                const candidateIndex = (start + indexShift) % optionColors.length
+                if (candidateIndex !== forbiddenIndex) {
+                    return optionColors[candidateIndex]
+                }
+            }
+
+            return option
+        }
+
+        return {
+            Red: pickDifferent('Red', 1),
+            Green: pickDifferent('Green', 3),
+            Blue: pickDifferent('Blue', 5),
+            Yellow: pickDifferent('Yellow', 7),
+        }
+    }, [isStarted, prompt.ink, prompt.word, round])
+
     const startTest = (event: MouseEvent<HTMLButtonElement>) => {
         setIsStarted(true)
         setRound(0)
@@ -117,7 +143,7 @@ export function StroopChaosTest({ onComplete }: StroopChaosTestProps) {
                             onClick={(event) => handlePick(option, event)}
                             disabled={!isStarted}
                         >
-                            {option}
+                            <span className={colorClassMap[optionLabelColorMap[option]]}>{option}</span>
                         </Button>
                     ))}
                 </div>
