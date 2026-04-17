@@ -10,7 +10,7 @@ export function LandingPage({ bestScore, onStart }: LandingPageProps) {
         <main className="mx-auto flex min-h-svh w-full max-w-xl flex-col justify-center px-4 py-8 text-center sm:px-6">
             <h1 className="font-display text-5xl text-white sm:text-6xl">Drunk Test 🍺</h1>
             <p className="mx-auto mt-4 max-w-sm text-sm text-white/70">
-                Three quick tests. One chaotic score. Best on mobile with motion sensors enabled.
+                Five quick tests. One chaotic score. Best on mobile with motion sensors enabled.
             </p>
 
             <div className="mt-8 rounded-3xl border border-white/15 bg-white/5 p-4 backdrop-blur-xl">

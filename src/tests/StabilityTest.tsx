@@ -32,12 +32,22 @@ export function StabilityTest({ onComplete }: StabilityTestProps) {
     const samplesRef = useRef<number[]>([])
     const baselineRef = useRef({ gamma: 0, beta: 0 })
     const spillRef = useRef(0)
+    const baselineCapturedRef = useRef(false)
 
     const { gamma, beta, isSupported, permissionState, requestPermission } =
         useDeviceOrientation(isRunning)
 
     useEffect(() => {
         if (!isRunning || gamma === null || beta === null) return
+
+        if (!baselineCapturedRef.current) {
+            baselineRef.current = { gamma, beta }
+            baselineCapturedRef.current = true
+            window.setTimeout(() => {
+                setStartedAt(Date.now())
+            }, 0)
+            return
+        }
 
         const relativeGamma = gamma - baselineRef.current.gamma
         const relativeBeta = beta - baselineRef.current.beta
@@ -104,6 +114,8 @@ export function StabilityTest({ onComplete }: StabilityTestProps) {
         setSpillPercent(0)
         spillRef.current = 0
         setCupTiltDeg(0)
+        baselineCapturedRef.current = false
+        setStartedAt(null)
 
         const granted = await requestPermission()
         if (!granted) {
@@ -111,13 +123,7 @@ export function StabilityTest({ onComplete }: StabilityTestProps) {
             return
         }
 
-        baselineRef.current = {
-            gamma: gamma ?? 0,
-            beta: beta ?? 0,
-        }
-
         setIsRunning(true)
-        setStartedAt(Date.now())
     }
 
     const completeWithFallback = () => {
@@ -152,9 +158,11 @@ export function StabilityTest({ onComplete }: StabilityTestProps) {
                     </div>
 
                     <p className="mt-3 text-sm text-white/70">
-                        {isRunning
-                            ? 'Stay smooth. Too much tilt spills the drink.'
-                            : 'Press start, allow sensors, then keep the drink steady.'}
+                        {isRunning && startedAt === null
+                            ? 'Hold your phone naturally for a moment. Calibrating...'
+                            : isRunning
+                                ? 'Stay smooth. Too much tilt spills the drink.'
+                                : 'Press start, allow sensors, then keep the drink steady.'}
                     </p>
                     <p className="mt-3 text-xs uppercase tracking-[0.12em] text-white/50">
                         Support: {isSupported ? 'Available' : 'Not available'} | Permission: {permissionState}
